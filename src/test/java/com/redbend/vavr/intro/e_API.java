@@ -1,12 +1,18 @@
 package com.redbend.vavr.intro;
 
+import com.redbend.vavr.intro.client.Model;
+import com.redbend.vavr.intro.client.ModelPatterns;
+
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.net.URISyntaxException;
+import java.net.http.HttpConnectTimeoutException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
 
-import operation.client.model.Model;
-import operation.client.model.ModelPatterns;
 import io.vavr.API;
 import io.vavr.Patterns;
 import io.vavr.Predicates;
@@ -21,13 +27,22 @@ import static io.vavr.API.For;
 import static io.vavr.API.Map;
 import static io.vavr.API.Match;
 import static io.vavr.API.TODO;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class e_API {
 
     @Test
     void unchecked() {
-        Stream.iterate(0, i -> i + 1);
+        Stream.iterate(0, i -> i + 1)
+                .map(API.unchecked(integer -> veryAnnoyingThrowingMethod()));
+    }
+
+
+    String veryAnnoyingThrowingMethod() throws FileNotFoundException,
+            URISyntaxException,
+            HttpConnectTimeoutException,
+            InvalidAlgorithmParameterException,
+            NoSuchAlgorithmException {
+        return "return";
     }
 
     @Test
@@ -76,7 +91,7 @@ public class e_API {
         failure.mapFailure(
                 Case($(Predicates.instanceOf(IOException.class)), e -> new RuntimeException()));
 
-        Match(success).of(
+       Match(success).of(
                 Case(Patterns.$Success($()), (String val) -> true),
                 Case(Patterns.$Failure($(Predicates.instanceOf(RuntimeException.class))), () -> false)
         );

@@ -1,11 +1,12 @@
-
 package com.redbend.vavr.intro;
+
+import com.redbend.vavr.intro.client.ClientRestService;
+import com.redbend.vavr.intro.report.OperationRestService;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.LogManager;
 
-import operation.client.adapter.BankingService;
 import io.helidon.config.Config;
 import io.helidon.health.HealthSupport;
 import io.helidon.health.checks.HealthChecks;
@@ -14,7 +15,6 @@ import io.helidon.metrics.MetricsSupport;
 import io.helidon.webserver.Routing;
 import io.helidon.webserver.WebServer;
 import lombok.NoArgsConstructor;
-import operation.report.OperationService;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -79,7 +79,7 @@ public final class BankApp {
      */
     private static Routing createRouting(Config config) {
         MetricsSupport metrics = MetricsSupport.create();
-        BankingService bankingService = new BankingService();
+        ClientRestService clientRestService = new ClientRestService();
         HealthSupport health = HealthSupport.builder()
                 .addLiveness(HealthChecks.healthChecks())   // Adds a convenient set of checks
                 .build();
@@ -87,8 +87,8 @@ public final class BankApp {
         return Routing.builder()
                 .register(health)                   // Health at "/health"
                 .register(metrics)                  // Metrics at "/metrics"
-                .register("/bank", bankingService)
-                .register("/csv", new OperationService())
+                .register("/bank", clientRestService)
+                .register("/csv", new OperationRestService())
                 .build();
     }
 
