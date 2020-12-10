@@ -18,7 +18,7 @@ https://helidon.io/docs/latest/#/se/guides/02_quickstart
 
 ## Build and run
 
-###With JDK11+
+### With JDK11+
 Just run using your favorite IDE... Be sure to enable annotation processing!
 
 Or use the command line:
@@ -72,7 +72,6 @@ Look into the d_CoolNewAndShiny class for examples from the presentation.
 ### API
 This section features the functionalities that ara available through the API class:
 - API.unchecked() for enhanced handling exceptions inside Streams
-- API.TODO() for easier handling of unimplemented code
 - API.TODO() for easier handling of unimplemented code
 - API.For() in all of its forms, that is based on Scala's for comprehension. 
   It is used to easily merge all Vavr's Collections and Monadic containers(Future, Try, Option, Either,  etc.)   
